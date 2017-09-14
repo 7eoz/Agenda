@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StudentsList">
+
+        </activity>
+        <activity android:name=".FormActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
