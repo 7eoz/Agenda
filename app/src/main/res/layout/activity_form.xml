@@ -42,11 +42,5 @@
             android:max="10"
             android:numStars="5" />
 
-        <Button
-            android:id="@+id/form_save_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save" />
-
     </LinearLayout>
 </ScrollView>
