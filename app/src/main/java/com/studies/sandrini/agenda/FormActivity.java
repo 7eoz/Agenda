@@ -9,12 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.studies.sandrini.agenda.model.Student;
+
 public class FormActivity extends AppCompatActivity {
+
+    private FormHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
+
+        helper = new FormHelper(this);
     }
 
     @Override
@@ -27,15 +33,13 @@ public class FormActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_form_ok:
-                Toast.makeText(FormActivity.this, "Student saved", Toast.LENGTH_SHORT).show();
-                EditText nameField = (EditText) findViewById(R.id.form_name);
-                String name = nameField.getText().toString();
-                EditText adressField = (EditText) findViewById(R.id.form_adress);
-                String adress = adressField.getText().toString();
+                Student student = helper.getStudent();
+                Toast.makeText(FormActivity.this, "Student " + student.getName() + " saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
 
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
