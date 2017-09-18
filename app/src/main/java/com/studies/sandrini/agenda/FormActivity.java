@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.studies.sandrini.agenda.dao.StudentDAO;
 import com.studies.sandrini.agenda.model.Student;
 
 public class FormActivity extends AppCompatActivity {
@@ -34,6 +35,9 @@ public class FormActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.menu_form_ok:
                 Student student = helper.getStudent();
+                StudentDAO dao = new StudentDAO(this);
+                dao.setStudent(student);
+                dao.close();
                 Toast.makeText(FormActivity.this, "Student " + student.getName() + " saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;
