@@ -1,22 +1,24 @@
 package com.studies.sandrini.agenda.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Sandrini on 17/09/2017.
  */
 
-public class Student {
-    long id;
-    String name;
-    String adress;
-    String phone;
-    String site;
-    double grade;
+public class Student implements Serializable{
+    private Long id;
+    private String name;
+    private String adress;
+    private String phone;
+    private String site;
+    private Double grade;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,11 +54,16 @@ public class Student {
         this.site = site;
     }
 
-    public double getGrade() {
+    public Double getGrade() {
         return grade;
     }
 
-    public void setGrade(double grade) {
+    public void setGrade(Double grade) {
         this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " - " + getName();
     }
 }

@@ -1,5 +1,6 @@
 package com.studies.sandrini.agenda;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,6 +23,11 @@ public class FormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form);
 
         helper = new FormHelper(this);
+        Intent intent = getIntent();
+        Student student = (Student) intent.getSerializableExtra("student");
+        if(student != null) {
+            helper.fillForm(student);
+        }
     }
 
     @Override
@@ -36,7 +42,11 @@ public class FormActivity extends AppCompatActivity {
             case R.id.menu_form_ok:
                 Student student = helper.getStudent();
                 StudentDAO dao = new StudentDAO(this);
-                dao.setStudent(student);
+                if(student.getId() != null){
+                    dao.updateStudent(student);
+                }else{
+                    dao.setStudent(student);
+                }
                 dao.close();
                 Toast.makeText(FormActivity.this, "Student " + student.getName() + " saved", Toast.LENGTH_SHORT).show();
                 finish();

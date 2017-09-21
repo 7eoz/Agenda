@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.studies.sandrini.agenda.model.Student;
 
@@ -23,29 +24,35 @@ public class StudentDAO extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Students(id INTEGER PRIMARY KEY, name TEXT NOT NULL, adress TEXT, phone TEXT, site TEXT, grade REAL);";
+        String sql = "CREATE TABLE Students(id INTEGER PRIMARY KEY, name TEXT NOT NULL, adress TEXT, phone TEXT, site TEXT, grade REAL)";
         db.execSQL(sql);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS  Students;";
+        String sql = "DROP TABLE IF EXISTS  Students";
         db.execSQL(sql);
         onCreate(db);
     }
 
     public void setStudent(Student student) {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
 
+        ContentValues values = getContentValues(student);
+
+        db.insert("Students", null, values);
+    }
+
+    @NonNull
+    private ContentValues getContentValues(Student student) {
+        ContentValues values = new ContentValues();
         values.put("name", student.getName());
         values.put("adress", student.getAdress());
         values.put("phone", student.getPhone());
         values.put("site", student.getSite());
         values.put("grade", student.getGrade());
-
-        db.insert("Agenda", null, values);
+        return values;
     }
 
     public List<Student> getStudents() {
@@ -55,6 +62,7 @@ public class StudentDAO extends SQLiteOpenHelper{
         List<Student> students = new ArrayList<Student>();
         while(c.moveToNext()){
             Student student = new Student();
+            student.setId(c.getLong(c.getColumnIndex("id")));
             student.setName(c.getString(c.getColumnIndex("name")));
             student.setAdress(c.getString(c.getColumnIndex("adress")));
             student.setPhone(c.getString(c.getColumnIndex("phone")));
@@ -64,5 +72,19 @@ public class StudentDAO extends SQLiteOpenHelper{
         }
         c.close();
         return students;
+    }
+
+    public void deleteStudent(Student student) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] params = {student.getId().toString()};
+        db.delete("Students", "id = ?", params);
+    }
+
+    public void updateStudent(Student student) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = getContentValues(student);
+        String[] params = {student.getId().toString()};
+        db.update("Students", values, "id = ?", params);
     }
 }
