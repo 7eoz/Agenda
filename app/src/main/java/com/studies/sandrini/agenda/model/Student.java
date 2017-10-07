@@ -13,6 +13,7 @@ public class Student implements Serializable{
     private String phone;
     private String site;
     private Double grade;
+    private String imagePath;
 
     public Long getId() {
         return id;
@@ -61,6 +62,10 @@ public class Student implements Serializable{
     public void setGrade(Double grade) {
         this.grade = grade;
     }
+
+    public String getImagePath() { return imagePath; }
+
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
     @Override
     public String toString() {

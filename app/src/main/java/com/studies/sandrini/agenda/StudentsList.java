@@ -10,11 +10,11 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.studies.sandrini.agenda.adapter.StudentAdapter;
 import com.studies.sandrini.agenda.dao.StudentDAO;
 import com.studies.sandrini.agenda.model.Student;
 
@@ -60,11 +60,11 @@ public class StudentsList extends AppCompatActivity {
 
     private void loadList() {
         StudentDAO dao = new StudentDAO(this);
-        List<Student> students = dao.getStudents();
+        List<Student> students = dao.searchStudents();
         dao.close();
 
-       
-        ArrayAdapter<Student> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, students);
+
+        StudentAdapter adapter = new StudentAdapter(this, students);
         studentsList.setAdapter(adapter);
     }
 

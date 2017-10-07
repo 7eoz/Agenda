@@ -60,11 +60,7 @@ public class FormActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Activity.RESULT_OK){
             if (requestCode == CAMERA_REQUEST) {
-                ImageView imageView = (ImageView) findViewById(R.id.form_image);
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                Bitmap minimizedBitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
-                imageView.setImageBitmap(minimizedBitmap);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                helper.loadImage(imagePath);
             }
         }
 
@@ -81,6 +77,7 @@ public class FormActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.menu_form_ok:
                 Student student = helper.getStudent();
+
                 StudentDAO dao = new StudentDAO(this);
                 if(student.getId() != null){
                     dao.updateStudent(student);
@@ -88,6 +85,7 @@ public class FormActivity extends AppCompatActivity {
                     dao.setStudent(student);
                 }
                 dao.close();
+
                 Toast.makeText(FormActivity.this, "Student " + student.getName() + " saved", Toast.LENGTH_SHORT).show();
                 finish();
                 break;

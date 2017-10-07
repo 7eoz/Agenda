@@ -19,43 +19,52 @@ import java.util.List;
 public class StudentDAO extends SQLiteOpenHelper{
 
     public StudentDAO(Context context) {
-        super(context, "Agenda", null, 1);
+        super(context, "Agenda", null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Students(id INTEGER PRIMARY KEY, name TEXT NOT NULL, adress TEXT, phone TEXT, site TEXT, grade REAL)";
+        String sql = "CREATE TABLE Students(id INTEGER PRIMARY KEY, " +
+                "name TEXT NOT NULL, " +
+                "adress TEXT, " +
+                "phone TEXT, " +
+                "site TEXT, " +
+                "grade REAL, " +
+                "imagePath TEXT);";
         db.execSQL(sql);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS  Students";
-        db.execSQL(sql);
-        onCreate(db);
+        switch (oldVersion){
+            case 1:
+                String sql = "ALTER TABLE Students ADD COLUMN imagePath TEXT";
+                db.execSQL(sql);
+        }
     }
 
     public void setStudent(Student student) {
         SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = getContentValues(student);
+        ContentValues values = getStudentData(student);
 
         db.insert("Students", null, values);
     }
 
     @NonNull
-    private ContentValues getContentValues(Student student) {
+    private ContentValues getStudentData(Student student) {
         ContentValues values = new ContentValues();
         values.put("name", student.getName());
         values.put("adress", student.getAdress());
         values.put("phone", student.getPhone());
         values.put("site", student.getSite());
         values.put("grade", student.getGrade());
+        values.put("imagePath", student.getImagePath());
         return values;
     }
 
-    public List<Student> getStudents() {
+    public List<Student> searchStudents() {
         String sql = "SELECT * FROM  Students";
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery(sql, null);
@@ -68,6 +77,7 @@ public class StudentDAO extends SQLiteOpenHelper{
             student.setPhone(c.getString(c.getColumnIndex("phone")));
             student.setSite(c.getString(c.getColumnIndex("site")));
             student.setGrade(c.getDouble(c.getColumnIndex("grade")));
+            student.setImagePath(c.getString(c.getColumnIndex("imagePath")));
             students.add(student);
         }
         c.close();
@@ -83,7 +93,7 @@ public class StudentDAO extends SQLiteOpenHelper{
     public void updateStudent(Student student) {
         SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = getContentValues(student);
+        ContentValues values = getStudentData(student);
         String[] params = {student.getId().toString()};
         db.update("Students", values, "id = ?", params);
     }
