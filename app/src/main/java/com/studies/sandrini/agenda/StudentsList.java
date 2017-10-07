@@ -50,6 +50,10 @@ public class StudentsList extends AppCompatActivity {
             }
         });
 
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[] { android.Manifest.permission.RECEIVE_SMS} , 234);
+        }
+
         registerForContextMenu(studentsList);
     }
 

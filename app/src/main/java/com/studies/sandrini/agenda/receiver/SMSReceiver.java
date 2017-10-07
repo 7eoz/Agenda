@@ -3,11 +3,13 @@ package com.studies.sandrini.agenda.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
+import com.studies.sandrini.agenda.R;
 import com.studies.sandrini.agenda.dao.StudentDAO;
 import com.studies.sandrini.agenda.model.Student;
 
@@ -32,6 +34,9 @@ public class SMSReceiver extends BroadcastReceiver {
 
         if(dao.isStudent(phone)){
             Toast.makeText(context, "You received a message!", Toast.LENGTH_SHORT);
+            MediaPlayer mp = MediaPlayer.create(context, R.raw.msg);
+            mp.start();
         }
+        dao.close();
     }
 }
