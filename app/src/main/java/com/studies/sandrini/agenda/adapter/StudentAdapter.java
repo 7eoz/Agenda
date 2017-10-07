@@ -1,10 +1,13 @@
 package com.studies.sandrini.agenda.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studies.sandrini.agenda.R;
@@ -46,7 +49,24 @@ public class StudentAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Student student = students.get(position);
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.list_item, null);
+        View view = convertView;
+
+        if(view == null) {
+            view = inflater.inflate(R.layout.list_item, parent, false);
+        }
+
+       TextView nameField = (TextView) view.findViewById(R.id.student_name);
+        TextView phoneField = (TextView) view.findViewById(R.id.student_phone);
+        ImageView imageField = (ImageView) view.findViewById(R.id.student_image);
+
+        nameField.setText(student.getName());
+        phoneField.setText(student.getPhone());
+        if(student.getImagePath() != null){
+            Bitmap bitmap = BitmapFactory.decodeFile(student.getImagePath());
+            Bitmap minimizedBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+            imageField.setImageBitmap(minimizedBitmap);
+            imageField.setScaleType(ImageView.ScaleType.FIT_XY);
+        }
 
         return view;
     }
