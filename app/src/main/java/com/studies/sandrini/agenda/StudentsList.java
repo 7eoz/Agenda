@@ -1,5 +1,6 @@
 package com.studies.sandrini.agenda;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -50,7 +51,7 @@ public class StudentsList extends AppCompatActivity {
         });
 
         registerForContextMenu(studentsList);
-        }
+    }
 
     @Override
     protected void onResume() {
