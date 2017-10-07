@@ -10,6 +10,33 @@
         android:orientation="vertical"
         tools:context="com.studies.sandrini.agenda.FormActivity">
 
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="230dp">
+
+            <ImageView
+                android:id="@+id/form_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#00A8EC"
+                android:src="@drawable/person" />
+
+            <Button
+                android:id="@+id/form_image_button"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="160dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/camera_background"
+                android:elevation="6dp"
+                android:stateListAnimator="@null" />
+
+        </RelativeLayout>
+
         <EditText
             android:id="@+id/form_name"
             android:layout_width="match_parent"
