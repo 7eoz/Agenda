@@ -1,6 +1,9 @@
 package com.studies.sandrini.agenda;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -67,12 +70,68 @@ public class StudentsList extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final Student student = (Student) studentsList.getItemAtPosition(info.position);
+
+        final MenuItem visitSite = menu.add("Visit site");
+        visitSite.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent siteIntent = new Intent(Intent.ACTION_VIEW);
+
+                String site = student.getSite();
+                if (!site.startsWith("http://")){
+                    site = "http://" + site;
+                }
+                siteIntent.setData(Uri.parse(site));
+                visitSite.setIntent(siteIntent);
+                return false;
+            }
+        });
+
+        final MenuItem sendSMS = menu.add("Send SMS");
+        sendSMS.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                smsIntent.setData(Uri.parse("sms:" + student.getPhone()));
+                sendSMS.setIntent(smsIntent);
+                return false;
+            }
+        });
+
+        MenuItem viewOnMap = menu.add("View on map");
+        viewOnMap.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+                mapIntent.setData(Uri.parse("geo:0,0?q=" + student.getAdress()));
+                return false;
+            }
+        });
+
+        MenuItem callStudent = menu.add("Call student");
+        callStudent.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (ActivityCompat.checkSelfPermission(StudentsList.this, android.Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(StudentsList.this,
+                            new String[]{android.Manifest.permission.CALL_PHONE}, 123);
+                }
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + student.getPhone()));
+
+                return false;
+            }
+        });
+
+
+
         MenuItem delete = menu.add("Delete");
         delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                Student student = (Student) studentsList.getItemAtPosition(info.position);
                 StudentDAO dao = new StudentDAO(StudentsList.this);
                 dao.deleteStudent(student);
                 dao.close();
