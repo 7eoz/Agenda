@@ -1,6 +1,5 @@
 package com.studies.sandrini.agenda;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -8,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +20,8 @@ import com.studies.sandrini.agenda.dao.StudentDAO;
 import com.studies.sandrini.agenda.model.Student;
 
 import java.util.List;
+
+import converter.StudentConverter;
 
 public class StudentsList extends AppCompatActivity {
 
@@ -39,6 +41,7 @@ public class StudentsList extends AppCompatActivity {
             }
         });
 
+
         studentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> list, View item, int position, long id) {
@@ -55,6 +58,29 @@ public class StudentsList extends AppCompatActivity {
         }
 
         registerForContextMenu(studentsList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.students_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.send_grades:
+                StudentDAO dao = new StudentDAO(this);
+                List<Student> students = dao.searchStudents();
+                dao.close();
+
+                StudentConverter converter = new StudentConverter();
+                String json = converter.convertToJSON(students);
+
+                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
