@@ -16,12 +16,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.studies.sandrini.agenda.adapter.StudentAdapter;
+import com.studies.sandrini.agenda.converter.StudentConverter;
 import com.studies.sandrini.agenda.dao.StudentDAO;
 import com.studies.sandrini.agenda.model.Student;
 
 import java.util.List;
 
-import converter.StudentConverter;
+
 
 public class StudentsList extends AppCompatActivity {
 
@@ -60,6 +61,8 @@ public class StudentsList extends AppCompatActivity {
         registerForContextMenu(studentsList);
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.students_list_menu, menu);
@@ -70,14 +73,8 @@ public class StudentsList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.send_grades:
-                StudentDAO dao = new StudentDAO(this);
-                List<Student> students = dao.searchStudents();
-                dao.close();
-
-                StudentConverter converter = new StudentConverter();
-                String json = converter.convertToJSON(students);
-
-                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_SHORT).show();
+                SendStudentsTask task = new SendStudentsTask(this);
+                task.execute();
                 break;
         }
         return super.onOptionsItemSelected(item);

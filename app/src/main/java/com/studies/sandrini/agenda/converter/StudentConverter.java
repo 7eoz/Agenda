@@ -1,4 +1,4 @@
-package converter;
+package com.studies.sandrini.agenda.converter;
 
 import com.studies.sandrini.agenda.model.Student;
 
