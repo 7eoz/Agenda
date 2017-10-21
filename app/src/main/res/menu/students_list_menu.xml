@@ -5,9 +5,16 @@
     tools:context=".StudentsList">
 
     <item
-        android:id="@+id/send_grades"
-        android:title="Send grades"
-        android:icon="@drawable/ic_enviar"
+    android:id="@+id/send_grades"
+    android:title="Send grades"
+    android:icon="@drawable/ic_enviar"
+    app:showAsAction="always"
+    />
+
+    <item
+        android:id="@+id/receive_tests"
+        android:title="Receive grades"
+        android:icon="@drawable/ic_receber"
         app:showAsAction="always"
         />
 </menu>

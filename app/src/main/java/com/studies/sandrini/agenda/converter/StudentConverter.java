@@ -21,7 +21,7 @@ public class StudentConverter {
             for (Student student : students){
                 js.object();
                 js.key("nome").value(student.getName());
-                js.key("grade").value(student.getGrade());
+                js.key("nota").value(student.getGrade());
                 js.endObject();
             }
             js.endArray().endObject().endArray().endObject();

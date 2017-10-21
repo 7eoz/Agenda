@@ -76,6 +76,10 @@ public class StudentsList extends AppCompatActivity {
                 SendStudentsTask task = new SendStudentsTask(this);
                 task.execute();
                 break;
+            case R.id.receive_tests:
+                Intent openTestsActivity = new Intent(this, TestsActivity.class);
+                startActivity(openTestsActivity);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
