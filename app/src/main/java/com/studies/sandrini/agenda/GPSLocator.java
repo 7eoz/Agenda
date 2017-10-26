@@ -31,11 +31,9 @@ import com.studies.sandrini.agenda.StudentsList;
 public class GPSLocator extends Activity implements GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     private final GoogleApiClient client;
-    private final GoogleMap map;
-    private final Context context;
+    private final MapFragment mapFragment;
 
-    public GPSLocator(Context context, GoogleMap map){
-        this.context = context;
+    public GPSLocator(Context context, MapFragment mapFragment){
         client = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -43,7 +41,7 @@ public class GPSLocator extends Activity implements GoogleApiClient.ConnectionCa
 
         client.connect();
 
-        this.map = map;
+        this.mapFragment = mapFragment;
     }
 
     @Override
@@ -52,13 +50,6 @@ public class GPSLocator extends Activity implements GoogleApiClient.ConnectionCa
         request.setSmallestDisplacement(50);
         request.setInterval(1000);
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION}, 111);
-        }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(client, request, this);
     }
@@ -71,8 +62,9 @@ public class GPSLocator extends Activity implements GoogleApiClient.ConnectionCa
     @Override
     public void onLocationChanged(Location location) {
         LatLng coordinate = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate update = CameraUpdateFactory.newLatLng(coordinate);
-        map.moveCamera(update);
+        mapFragment.centerOn(coordinate);
+
+
 
     }
 }

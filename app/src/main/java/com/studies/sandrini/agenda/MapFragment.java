@@ -19,6 +19,8 @@ import java.util.List;
 
 
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+
+    private GoogleMap map;
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -29,10 +31,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        this.map = googleMap;
         LatLng schoolPosition = getAddressCoordinate("Rua da Trindade, 290");
         if(schoolPosition != null) {
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(schoolPosition, 17);
-            googleMap.moveCamera(update);
+            centerOn(schoolPosition);
         }
 
         StudentDAO studentDAO = new StudentDAO(getContext());
@@ -47,9 +49,13 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             }
         }
         studentDAO.close();
+    }
 
-        new GPSLocator(getContext(), googleMap);
-
+    public void centerOn(LatLng coordinate) {
+        if (map != null) {
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(coordinate, 17);
+            map.moveCamera(update);
+        }
     }
 
     private LatLng getAddressCoordinate(String address) {
