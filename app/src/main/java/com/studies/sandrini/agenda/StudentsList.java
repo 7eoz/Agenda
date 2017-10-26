@@ -80,6 +80,10 @@ public class StudentsList extends AppCompatActivity {
                 Intent openTestsActivity = new Intent(this, TestsActivity.class);
                 startActivity(openTestsActivity);
                 break;
+            case R.id.map_view:
+                Intent openMapActivity = new Intent(this, MapActivity.class);
+                startActivity(openMapActivity);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
